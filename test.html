@@ -232,7 +232,7 @@
  
       <!-- ================= HOME ================= -->
       <section id="home" class="screen home active">
-        <h3>โปรดเลือกหมวดหมู่การบันทึก123</h3>
+        <h3>โปรดเลือกหมวดหมู่การบันทึกioio</h3>
  
         <button
           class="btn"
@@ -543,12 +543,11 @@
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
       let LINE_USER_ID = "";
-      let LIFF_ID_TOKEN = "";
  
       // Your LIFF ID
       const LIFF_ID = "2009000080-KQi3gBOi";
       // Server to receive JWT (optional, adjust or remove if not needed)
-      const SERVER_URL = " https://sirikornngam.github.io/MyFinBuddy_line-system/test.html";
+      const SERVER_URL = "https://liff.kawinhill.com/api/liff-jwt";
  
       async function initializeLiff() {
         const envBadge = document.getElementById("envBadge");
@@ -588,8 +587,6 @@
           // Optional: also send raw JWT + userId to your server
           const rawIdToken = liff.getIDToken();
           if (rawIdToken) {
-            // keep globally so we can send with income/expense/debt payloads
-            LIFF_ID_TOKEN = rawIdToken;
             try {
               await fetch(SERVER_URL, {
                 method: "POST",
@@ -705,7 +702,6 @@
           category: selectedCategory,
           amount: rawAmount,
           userId: LINE_USER_ID,
-          idToken: LIFF_ID_TOKEN, // allow backend to verify real LINE user
         };
  
         // Mascot message
@@ -936,4 +932,5 @@
     </script>
   </body>
 </html>
+
 
