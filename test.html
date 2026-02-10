@@ -1,0 +1,938 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <title>MyFinBuddy LIFF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+        margin: 0;
+        padding: 16px;
+        background: #f5f7fb;
+        color: #111827;
+      }
+      h3 {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
+      .app-shell {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      #userBar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 12px;
+        color: #6b7280;
+      }
+      #userBar span strong {
+        color: #111827;
+      }
+      .badge {
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: #e5f3ff;
+        color: #1d4ed8;
+      }
+      .screen {
+        display: none;
+        background: #fff;
+        border-radius: 16px;
+        padding: 16px;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      }
+      .screen.active {
+        display: block;
+      }
+      .home {
+        text-align: center;
+      }
+      .btn {
+        display: block;
+        width: 100%;
+        margin: 8px 0;
+      }
+      .btn img {
+        width: 100%;
+        border-radius: 999px;
+        display: block;
+      }
+      .back {
+        border: none;
+        background: none;
+        color: #4b5563;
+        font-size: 14px;
+        margin-bottom: 8px;
+        cursor: pointer;
+      }
+      .header {
+        margin-bottom: 12px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+      .card-btn {
+        border-radius: 12px;
+        background: #f9fafb;
+        padding: 8px;
+        text-align: center;
+        cursor: pointer;
+        border: 2px solid transparent;
+      }
+      .card-btn img {
+        width: 64px;
+        height: 64px;
+        object-fit: contain;
+      }
+      .card-btn .label {
+        font-size: 12px;
+        margin-top: 4px;
+      }
+      .card-btn.active {
+        border-color: #06c755;
+        background: #ecfdf3;
+      }
+      .form-section {
+        margin-top: 16px;
+      }
+      .amount-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
+      .selected-category {
+        flex: 0 0 auto;
+        min-width: 120px;
+        font-size: 13px;
+        color: #4b5563;
+      }
+      input[type="text"] {
+        flex: 1;
+        padding: 8px 10px;
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        font-size: 14px;
+      }
+      .confirm-btn {
+        width: 100%;
+        margin-top: 16px;
+        border: none;
+        border-radius: 999px;
+        padding: 10px 16px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        background: #06c755;
+        color: white;
+        box-shadow: 0 4px 10px rgba(6, 199, 85, 0.35);
+      }
+      .page.hidden {
+        display: none;
+      }
+      .category-btn {
+        border-radius: 999px;
+        background: #f9fafb;
+        padding: 8px 12px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .category-btn.active {
+        border-color: #06c755;
+        background: #ecfdf3;
+      }
+      .category-btn img {
+        flex-shrink: 0;
+      }
+      .category-block {
+        border-radius: 12px;
+        background: #f9fafb;
+        padding: 10px;
+        margin-bottom: 12px;
+      }
+      .category-block h3 {
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+      .card-content label {
+        display: block;
+        font-size: 12px;
+        margin-top: 6px;
+        margin-bottom: 2px;
+      }
+      .card-content input {
+        width: 100%;
+        border-radius: 999px;
+        border: 1px solid #d1d5db;
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+      .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 8px;
+        font-size: 12px;
+      }
+      .card-footer .actions button {
+        border-radius: 999px;
+        border: none;
+        padding: 4px 8px;
+        margin-left: 4px;
+        cursor: pointer;
+        background: #e5e7eb;
+      }
+      /* Mascot popup */
+      #mascotBox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.3);
+        align-items: center;
+        justify-content: center;
+        z-index: 50;
+      }
+      #mascotInner {
+        background: #fff;
+        padding: 16px;
+        border-radius: 16px;
+        max-width: 320px;
+        text-align: center;
+        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+      }
+      #mascotText {
+        font-size: 14px;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body onload="initializeLiff()">
+    <div class="app-shell">
+      <div id="userBar">
+        <span><strong>User ID:</strong> <span id="userIdText">-</span></span>
+        <span class="badge" id="envBadge">Loading...</span>
+      </div>
+ 
+      <!-- ================= HOME ================= -->
+      <section id="home" class="screen home active">
+        <h3>โปรดเลือกหมวดหมู่การบันทึก123</h3>
+ 
+        <button
+          class="btn"
+          onclick="goTo('income')"
+          aria-label="Income"
+          style="padding: 0; border: none; background: none"
+        >
+          <img
+            src="https://sirikornngam.github.io/MyFinBuddy-images/Income_button.png"
+            alt="Income"
+            style="
+              width: 100%;
+              height: 100%;
+              display: block;
+              object-fit: cover;
+              border-radius: 999px;
+              pointer-events: none;
+            "
+          />
+        </button>
+ 
+        <button
+          class="btn"
+          onclick="goTo('expenses')"
+          aria-label="Expenses"
+          style="padding: 0; border: none; background: none"
+        >
+          <img
+            src="https://sirikornngam.github.io/MyFinBuddy-images/Expenses_button.png"
+            alt="Expenses"
+            style="
+              width: 100%;
+              height: 100%;
+              display: block;
+              object-fit: cover;
+              border-radius: 999px;
+              pointer-events: none;
+            "
+          />
+        </button>
+ 
+        <button
+          class="btn"
+          onclick="goTo('debt')"
+          aria-label="Debt"
+          style="padding: 0; border: none; background: none"
+        >
+          <img
+            src="https://sirikornngam.github.io/MyFinBuddy-images/Debt_button.png"
+            alt="Debt"
+            style="
+              width: 100%;
+              height: 100%;
+              display: block;
+              object-fit: cover;
+              border-radius: 999px;
+              pointer-events: none;
+            "
+          />
+        </button>
+      </section>
+ 
+      <!-- ================= INCOME ================= -->
+      <section id="income" class="screen">
+        <button class="back" onclick="goTo('home')">← Back</button>
+        <div class="header">
+          <h3>เลือกช่องทางรายรับที่ต้องการบันทึกได้เลยค่ะ</h3>
+        </div>
+        <div class="grid">
+          <div class="card-btn" onclick="selectCard(this, 'salary')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/salary.png"
+            />
+            <div class="label">เงินเดือน (salary)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'bonus')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/bonus.png"
+            />
+            <div class="label">โบนัส (bonus)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'freelance')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/freelance.png"
+            />
+            <div class="label">ฟรีแลนซ์/งานเสริม (freelance)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'profits/dividend')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/dividend.png"
+            />
+            <div class="label">กำไรจากการลงทุน (profits/dividend)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'saving')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/saving.png"
+            />
+            <div class="label">เงินออม (saving)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'asset sale')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/asset sale.png"
+            />
+            <div class="label">เงินจากการขายสินทรัพย์ (asset sale)</div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="amount-row">
+            <div id="selectedCategoryText_section1" class="selected-category">
+              ยังไม่ได้เลือก
+            </div>
+            <input
+              type="text"
+              id="amount_income"
+              inputmode="numeric"
+              placeholder="จำนวนเงิน"
+            />
+          </div>
+        </div>
+        <button class="confirm-btn" onclick="submitData('income')">
+          ยืนยัน
+        </button>
+      </section>
+ 
+      <!-- ================= EXPENSES ================= -->
+      <section id="expenses" class="screen">
+        <button class="back" onclick="goTo('home')">← Back</button>
+        <div class="header">
+          <h3>วันนี้คุณมีรายจ่ายหมวดหมู่ไหนคะ?</h3>
+        </div>
+        <div class="grid">
+          <div class="card-btn" onclick="selectCard(this, 'food&drink')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/food&drink.png"
+            />
+            <div class="label">อาหาร &amp; เครื่องดื่ม (food &amp; drink)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'travel')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/travel.png"
+            />
+            <div class="label">การเดินทาง (travel)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'utilities')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/utilities.png"
+            />
+            <div class="label">ค่าน้ำ/ไฟ (utilities)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'housing')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/housing.png"
+            />
+            <div class="label">ที่อยู่อาศัย (housing)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'investment')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/investment.png"
+            />
+            <div class="label">การลงทุน (investment)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'debt')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/debt payment.png"
+            />
+            <div class="label">ชำระหนี้ (debt)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'shopping/fashion')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/fashion.png"
+            />
+            <div class="label">ช็อปปิ้ง/แฟชั่น/ความงาม (shopping)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'health/insurance')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/health.png"
+            />
+            <div class="label">สุขภาพ/ประกัน (health/insurance)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'business/work')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/business.png"
+            />
+            <div class="label">ธุรกิจ/งาน (business/work)</div>
+          </div>
+ 
+          <div class="card-btn" onclick="selectCard(this, 'education')">
+            <img
+              src="https://sirikornngam.github.io/MyFinBuddy-images/education.png"
+            />
+            <div class="label">การศึกษา/พัฒนาตนเอง (education)</div>
+          </div>
+        </div>
+        <div class="form-section">
+          <div class="amount-row">
+            <div id="selectedCategoryText_section2" class="selected-category">
+              ยังไม่ได้เลือก
+            </div>
+            <input
+              type="text"
+              id="amount_expense"
+              inputmode="numeric"
+              placeholder="จำนวนเงิน"
+            />
+          </div>
+        </div>
+        <button class="confirm-btn" onclick="submitData('expense')">
+          ยืนยัน
+        </button>
+      </section>
+ 
+      <!-- ================= DEBT ================= -->
+      <section id="debt" class="screen">
+        <button class="back" onclick="goTo('home')">← Back</button>
+        <div class="header">
+          <h3>เลือกหมวดหมู่หนี้สินที่ต้องการบันทึก (เลือกได้มากกว่า 1 หมวด)</h3>
+        </div>
+        <div id="pageSelect" class="page">
+          <div class="grid">
+            <div class="category-btn" onclick="toggleCategory(this, 'car')">
+              <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/car.png"
+                alt="รถยนต์"
+                style="width: 50px; height: 30px; vertical-align: middle"
+              />
+              รถยนต์ (car)
+            </div>
+            <div class="category-btn" onclick="toggleCategory(this, 'house')">
+              <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/house.png"
+                alt="ที่อยู่อาศัย"
+                style="width: 50px; height: 50px; vertical-align: middle"
+              />
+              ที่อยู่อาศัย (housing)
+            </div>
+            <div class="category-btn" onclick="toggleCategory(this, 'credit')">
+              <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/credit card.png"
+                alt="บัตรเครดิต"
+                style="width: 90px; height: 40px; vertical-align: middle"
+              />
+              บัตรเครดิต (credit card)
+            </div>
+            <div
+              class="category-btn"
+              onclick="toggleCategory(this, 'personal')"
+            >
+              <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/shopping.png"
+                alt="ผ่อนสินค้า"
+                style="width: 50px; height: 50px; vertical-align: middle"
+              />
+              ผ่อนสินค้า (shopping)
+            </div>
+            <div class="category-btn" onclick="toggleCategory(this, 'credit')">
+              <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/bank.png"
+                alt="กู้เงินธนาคาร"
+                style="width: 40px; height: 40px; vertical-align: middle"
+              />
+              กู้เงินธนาคาร (banking)
+            </div>
+            <div
+              class="category-btn"
+              onclick="toggleCategory(this, 'personal')"
+            >
+              <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/หนี้นอกระบบ.png"
+                alt="หนี้นอกระบบ"
+                style="width: 40px; height: 40px; vertical-align: middle"
+              />
+              หนี้นอกระบบ (personal)
+            </div>
+          </div>
+        </div>
+ 
+        <!-- ================= wizard ================= -->
+        <div id="pageWizard" class="page hidden"></div>
+ 
+        <button class="confirm-btn" onclick="handleDebtConfirm()">
+          ยืนยัน
+        </button>
+      </section>
+    </div>
+ 
+    <!-- Mascot popup -->
+    <div id="mascotBox">
+      <div id="mascotInner">
+        <div>MyFinBuddy</div>
+        <div id="mascotText"></div>
+      </div>
+    </div>
+ 
+    <!-- LIFF SDK + App logic -->
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+      let LINE_USER_ID = "";
+      let LIFF_ID_TOKEN = "";
+ 
+      // Your LIFF ID
+      const LIFF_ID = "2009000080-KQi3gBOi";
+      // Server to receive JWT (optional, adjust or remove if not needed)
+      const SERVER_URL = "https://script.google.com/macros/s/AKfycbyRcMSiRMyrKtvWy2SRvaJDgkyY-yMNtPPSWSrfaPXpMevR3wdCwTFMMfwJzgRLKIH9/exec";
+ 
+      async function initializeLiff() {
+        const envBadge = document.getElementById("envBadge");
+        const userIdText = document.getElementById("userIdText");
+ 
+        try {
+          if (typeof liff === "undefined") {
+            envBadge.textContent = "Error";
+            console.error("LIFF SDK failed to load");
+            return;
+          }
+ 
+          await liff.init({
+            liffId: LIFF_ID,
+            withLoginOnExternalBrowser: true,
+          });
+ 
+          envBadge.textContent = liff.isInClient()
+            ? "LINE App"
+            : "External Browser";
+ 
+          if (!liff.isLoggedIn()) {
+            // Redirect back to this page after login (works in external browser)
+            liff.login({ redirectUri: window.location.href });
+            return;
+          }
+ 
+          const decoded = liff.getDecodedIDToken();
+          if (!decoded) {
+            console.error("No decoded ID token. Check OpenID scope.");
+            return;
+          }
+ 
+          LINE_USER_ID = decoded.sub;
+          userIdText.textContent = LINE_USER_ID;
+ 
+          // Optional: also send raw JWT + userId to your server
+          const rawIdToken = liff.getIDToken();
+          if (rawIdToken) {
+            // keep globally so we can send with income/expense/debt payloads
+            LIFF_ID_TOKEN = rawIdToken;
+            try {
+              await fetch(SERVER_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  idToken: rawIdToken,
+                  userId: LINE_USER_ID,
+                }),
+              });
+            } catch (err) {
+              console.warn("Failed to send JWT to server:", err);
+            }
+          }
+        } catch (err) {
+          console.error("LIFF init error", err);
+          envBadge.textContent = "Error";
+        }
+      }
+ 
+      /* ---------- Navigation logic ---------- */
+      function showScreen(id) {
+        document
+          .querySelectorAll(".screen")
+          .forEach((s) => s.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+      }
+ 
+      function goTo(screen) {
+        history.pushState({ screen }, "", "");
+        showScreen(screen);
+      }
+ 
+      window.addEventListener("popstate", (e) => {
+        if (e.state && e.state.screen) {
+          showScreen(e.state.screen);
+        } else {
+          showScreen("home");
+        }
+      });
+ 
+      /* =========================
+         Income & Expense logic
+      ========================= */
+      let selectedCategory = "";
+ 
+      function selectCard(element, category) {
+        document
+          .querySelectorAll(".card-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+ 
+        element.classList.add("active");
+        selectedCategory = category;
+ 
+        const sec1 = document.getElementById("selectedCategoryText_section1");
+        const sec2 = document.getElementById("selectedCategoryText_section2");
+        if (sec1) sec1.textContent = category + " :";
+        if (sec2) sec2.textContent = category + " :";
+ 
+        // focus appropriate input
+        const incomeInput = document.getElementById("amount_income");
+        const expenseInput = document.getElementById("amount_expense");
+        if (
+          incomeInput &&
+          document.getElementById("income").classList.contains("active")
+        ) {
+          incomeInput.focus();
+        } else if (
+          expenseInput &&
+          document.getElementById("expenses").classList.contains("active")
+        ) {
+          expenseInput.focus();
+        }
+      }
+ 
+      // Format money with comma
+      function attachAmountFormatter(id) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener("input", function () {
+          let value = this.value.replace(/,/g, "");
+          if (value === "") return;
+          if (!isNaN(value)) {
+            this.value = Number(value).toLocaleString("en-US");
+          }
+        });
+      }
+ 
+      attachAmountFormatter("amount_income");
+      attachAmountFormatter("amount_expense");
+ 
+      function submitData(type) {
+        const input = document.getElementById(`amount_${type}`);
+        if (!input) return;
+ 
+        let rawAmount = input.value.replace(/,/g, "");
+ 
+        if (!selectedCategory) {
+          alert(
+            `กรุณาเลือกหมวดหมู่${
+              type === "income" ? "รายรับ" : "รายจ่าย"
+            }ก่อนค่ะ`,
+          );
+          return;
+        }
+ 
+        if (!rawAmount || rawAmount <= 0) {
+          alert("กรุณากรอกจำนวนเงินให้ถูกต้อง");
+          return;
+        }
+ 
+        const payload = {
+          type: type,
+          category: selectedCategory,
+          amount: rawAmount,
+          userId: LINE_USER_ID,
+          idToken: LIFF_ID_TOKEN, // allow backend to verify real LINE user
+        };
+ 
+        // Mascot message
+        showMascotMessage(
+          `คุณมี${
+            type === "income" ? "รายรับ" : "รายจ่าย"
+          }จาก "${selectedCategory}" จำนวน ${Number(
+            rawAmount,
+          ).toLocaleString()} บาท`,
+        );
+ 
+        // Send to Google Sheet
+        fetch(
+          "https://script.google.com/macros/s/AKfycbyRcMSiRMyrKtvWy2SRvaJDgkyY-yMNtPPSWSrfaPXpMevR3wdCwTFMMfwJzgRLKIH9/exec",
+          {
+            method: "POST",
+            body: JSON.stringify(payload),
+          },
+        )
+          .then((res) => res.text())
+          .then(() => {
+            setTimeout(() => {
+              resetForm("income");
+              resetForm("expense");
+            }, 1500);
+          })
+          .catch((err) => {
+            alert("เกิดข้อผิดพลาด ❌");
+            console.error(err);
+          });
+      }
+ 
+      /* =========================
+         Mascot Popup
+      ========================= */
+      function showMascotMessage(message) {
+        const box = document.getElementById("mascotBox");
+        const text = document.getElementById("mascotText");
+        if (!box || !text) return;
+ 
+        text.innerText = message;
+        box.style.display = "flex";
+ 
+        setTimeout(() => {
+          box.style.display = "none";
+        }, 3000);
+      }
+ 
+      /* =========================
+         Reset form
+      ========================= */
+      function resetForm(type) {
+        selectedCategory = "";
+ 
+        const input = document.getElementById(`amount_${type}`);
+        if (input) input.value = "";
+ 
+        const sec1 = document.getElementById("selectedCategoryText_section1");
+        const sec2 = document.getElementById("selectedCategoryText_section2");
+        if (sec1) sec1.textContent = "ยังไม่ได้เลือก";
+        if (sec2) sec2.textContent = "ยังไม่ได้เลือก";
+ 
+        document
+          .querySelectorAll(".card-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+      }
+ 
+      /* =========================
+         Debt wizard
+      ========================= */
+      let selectedCategories = [];
+      const wizardData = {};
+ 
+      function toggleCategory(el, cat) {
+        if (selectedCategories.includes(cat)) {
+          selectedCategories = selectedCategories.filter((c) => c !== cat);
+          el.classList.remove("active");
+        } else {
+          selectedCategories.push(cat);
+          el.classList.add("active");
+        }
+      }
+ 
+      const categoryLabel = {
+        car: "รถยนต์ 🚗",
+        house: "ที่อยู่อาศัย 🏠",
+        credit: "บัตรเครดิต 💳",
+        shopping: "ผ่อนสินค้า 🛍️",
+        banking: "กู้เงินธนาคาร 🏦",
+        personal: "หนี้นอกระบบ 👤",
+      };
+ 
+      function renderCard(cat) {
+        const d = wizardData[cat];
+        const c = d.cards[d.currentIndex];
+ 
+        document.getElementById(`${cat}-card`).innerHTML = `
+          <label>คุณผ่อนกับใคร (ชื่อคน/สถาบัน)</label>
+          <input value="${c.render || ""}"
+            oninput="updateValue('${cat}','render',this.value)">
+          <label>ยอดผ่อนต่อเดือน</label>
+          <input value="${c.monthly || ""}"
+            oninput="updateValue('${cat}','monthly',this.value)">
+          <label>ยอดคงเหลือที่ต้องจ่าย</label>
+          <input value="${c.remaining || ""}"
+            oninput="updateValue('${cat}','remaining',this.value)">
+          <label>หมายเหตุ</label>
+          <input value="${c.note || ""}"
+            oninput="updateValue('${cat}','note',this.value)">
+        `;
+ 
+        document.getElementById(`${cat}-progress`).innerText = `${
+          d.currentIndex + 1
+        } / ${d.cards.length}`;
+      }
+ 
+      function initWizard() {
+        const container = document.getElementById("pageWizard");
+        container.innerHTML = "";
+ 
+        selectedCategories.forEach((cat) => {
+          wizardData[cat] = {
+            category: cat,
+            userId: LINE_USER_ID,
+            currentIndex: 0,
+            cards: [{ render: "", monthly: "", remaining: "", note: "" }],
+          };
+ 
+          container.innerHTML += `
+            <div class="category-block">
+              <h3>${categoryLabel[cat] || cat}</h3>
+              <div class="card-content" id="${cat}-card"></div>
+              <div class="card-footer">
+                <span class="progress" id="${cat}-progress"></span>
+                <div class="actions">
+                  <button onclick="addCard('${cat}')">＋</button>
+                  <button onclick="nextCard('${cat}')">▶</button>
+                </div>
+              </div>
+            </div>
+          `;
+ 
+          renderCard(cat);
+        });
+      }
+ 
+      function goWizard() {
+        if (selectedCategories.length === 0) {
+          alert("กรุณาเลือกอย่างน้อย 1 หมวด");
+          return;
+        }
+ 
+        document.getElementById("pageSelect").classList.add("hidden");
+        document.getElementById("pageWizard").classList.remove("hidden");
+ 
+        initWizard();
+      }
+ 
+      function handleDebtConfirm() {
+        const pageSelect = document.getElementById("pageSelect");
+        const pageWizard = document.getElementById("pageWizard");
+ 
+        // หน้า 1 → ไป wizard
+        if (!pageSelect.classList.contains("hidden")) {
+          goWizard();
+          return;
+        }
+ 
+        // หน้า 2 → submit debt
+        submitDebt();
+      }
+ 
+      function submitDebt() {
+        const payload = {};
+        Object.keys(wizardData).forEach((cat) => {
+          payload[cat] = wizardData[cat].cards.map((card) => ({
+            lender: card.render,
+            monthly: Number(card.monthly),
+            remaining: Number(card.remaining),
+            note: card.note,
+          }));
+        });
+ 
+        const body = {
+          type: "debt",
+          payload: payload,
+          userId: LINE_USER_ID,
+        };
+ 
+        fetch(
+          "https://script.google.com/macros/s/AKfycbyRcMSiRMyrKtvWy2SRvaJDgkyY-yMNtPPSWSrfaPXpMevR3wdCwTFMMfwJzgRLKIH9/exec",
+          {
+            method: "POST",
+            body: JSON.stringify(body),
+          },
+        )
+          .then((res) => res.text())
+          .then(() => {
+            alert("บันทึกข้อมูลหนี้เรียบร้อยแล้ว ✅");
+            goTo("home");
+          })
+          .catch((err) => {
+            alert("เกิดข้อผิดพลาด ❌");
+            console.error(err);
+          });
+      }
+ 
+      function addCard(cat) {
+        wizardData[cat].cards.push({
+          render: "",
+          monthly: "",
+          remaining: "",
+          note: "",
+        });
+        wizardData[cat].currentIndex = wizardData[cat].cards.length - 1;
+        renderCard(cat);
+      }
+ 
+      function nextCard(cat) {
+        const d = wizardData[cat];
+        d.currentIndex = (d.currentIndex + 1) % d.cards.length;
+        renderCard(cat);
+      }
+ 
+      function updateValue(cat, key, val) {
+        wizardData[cat].cards[wizardData[cat].currentIndex][key] = val;
+      }
+    </script>
+  </body>
+</html>
