@@ -48,7 +48,7 @@
       }
       .screen {
         display: none;
-        background: #fff;
+        /*background: #fff;*/
         border-radius: 16px;
         padding: 16px;
         box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
@@ -87,15 +87,15 @@
       }
       .card-btn {
         border-radius: 12px;
-        background: #f9fafb;
+        background: #fff;
         padding: 8px;
         text-align: center;
         cursor: pointer;
         border: 2px solid transparent;
       }
       .card-btn img {
-        width: 64px;
-        height: 64px;
+        width: 72px;
+        height: 72px;
         object-fit: contain;
       }
       .card-btn .label {
@@ -113,6 +113,7 @@
         display: flex;
         gap: 8px;
         align-items: center;
+        justify-content:center;
       }
       .selected-category {
         flex: 0 0 auto;
@@ -122,8 +123,8 @@
       }
       input[type="text"] {
         flex: 1;
-        padding: 8px 10px;
-        border-radius: 999px;
+        padding: 12px;
+        border-radius: 12px;
         border: 1px solid #d1d5db;
         font-size: 14px;
       }
@@ -145,7 +146,7 @@
       }
       .category-btn {
         border-radius: 999px;
-        background: #f9fafb;
+        background: #fff;
         padding: 8px 12px;
         cursor: pointer;
         border: 2px solid transparent;
@@ -163,7 +164,7 @@
       }
       .category-block {
         border-radius: 12px;
-        background: #f9fafb;
+        background: #fff;
         padding: 10px;
         margin-bottom: 12px;
       }
@@ -534,7 +535,7 @@
     <!-- Mascot popup -->
     <div id="mascotBox">
       <div id="mascotInner">
-        <div>MyFinBuddy</div>
+        <img src="https://sirikornngam.github.io/MyFinBuddy-images/data saved.png" class="mascot-img">
         <div id="mascotText"></div>
       </div>
     </div>
@@ -930,12 +931,9 @@
         wizardData[cat].cards[wizardData[cat].currentIndex][key] = val;
       }
     </script>
-    <div id="mascotBox" class="mascot-popup" style="display:none;">
-      <img src="https://sirikornngam.github.io/MyFinBuddy-images/data saved.png" class="mascot-img">
-      <div id="mascotText"></div>
-    </div>
   </body>
 </html>
+
 
 
 
