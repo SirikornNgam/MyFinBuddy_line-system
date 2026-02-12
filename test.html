@@ -25,6 +25,10 @@
         font-size: 18px;
         text-align: center;
       }
+      hcard {
+        margin: 0 0 12px;
+        font-size: 18px;
+      }
       .app-shell {
         max-width: 480px;
         margin: 0 auto;
@@ -381,7 +385,8 @@
             <img
               src="https://sirikornngam.github.io/MyFinBuddy-images/food&drink.png"
             />
-            <div class="label">อาหาร &amp; เครื่องดื่ม (food &amp; drink)</div>
+            <div class="label">อาหาร &amp; เครื่องดื่ม</div>
+            <div class="label">(food &amp; drink)</div>
           </div>
  
           <div class="card-btn" onclick="selectCard(this, 'travel')">
@@ -816,7 +821,7 @@
           <label>ยอดคงเหลือที่ต้องจ่าย</label>
           <input value="${c.remaining || ""}"
             oninput="updateValue('${cat}','remaining',this.value)">
-          <label>หมายเหตุ</label>
+          <label>หมายเหตุ (โปรดระบุลำดับสินทรัพย์ เช่น บ้านหลังที่ 1 = บ้าน1)</label>
           <input value="${c.note || ""}"
             oninput="updateValue('${cat}','note',this.value)">
         `;
@@ -840,7 +845,7 @@
  
           container.innerHTML += `
             <div class="category-block">
-              <h3>${categoryLabel[cat] || cat}</h3>
+              <hcard>${categoryLabel[cat] || cat}</hcard>
               <div class="card-content" id="${cat}-card"></div>
               <div class="card-footer">
                 <span class="progress" id="${cat}-progress"></span>
@@ -940,6 +945,7 @@
     </script>
   </body>
 </html>
+
 
 
 
