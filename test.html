@@ -751,7 +751,6 @@
       
         const payload = {
           line_user_id: lineUserId,
-          employee_id: employeeId,
           consent: true,
           consent_version: "v1.0",
           timestamp: new Date().toISOString(),
@@ -759,7 +758,7 @@
         };
       
         try{
-          const res = await fetch(https://script.google.com/macros/s/AKfycbywlUADdisrqUB54D0vSaD-2R3VoMPqdaWX_3wwA-i6pdkHBPhlGCWjQUZsD-wyMuM/exec,{
+          const res = await fetch("https://script.google.com/macros/s/AKfycbywlUADdisrqUB54D0vSaD-2R3VoMPqdaWX_3wwA-i6pdkHBPhlGCWjQUZsD-wyMuM/exec",{
             method:"POST",
             body: JSON.stringify(payload)
           });
@@ -1085,6 +1084,7 @@
     </script>
   </body>
 </html>
+
 
 
 
