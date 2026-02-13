@@ -259,6 +259,9 @@
         background:#aaa;
         cursor:not-allowed;
       }
+      .field{
+        margin-top:15px;
+      }
     </style>
   </head>
   <body onload="initializeLiff()">
@@ -300,7 +303,15 @@
           </label>
           <p>เพื่อวัตถุประสงค์ในการวิเคราะห์ ให้คำแนะนำทางการเงิน การติดตามสถานะทางการเงิน และการพัฒนา/ปรับปรุงระบบ ตามรายละเอียดที่ระบุไว้ข้างต้น</p>
         </div>
-        <button id="submitBtn" class="confirm-btn" onclick="goTo('home')" disabled>ยินยอมและเริ่มใช้งาน</button>
+        <button id="submitBtn" class="confirm-btn" onclick="submitConsent()" disabled>ยินยอมและเริ่มใช้งาน</button>
+      </section>
+
+      <!-- ================= Initial Input ================= -->
+      <section id="initial input" class="screen">
+        <div class="field">
+          <label>เลขรหัสพนักงาน</label>
+          <input type="text" id="employeeId" placeholder="กรอกเลขรหัสพนักงาน">
+        </div>
       </section>
  
       <!-- ================= HOME ================= -->
@@ -657,6 +668,8 @@
  
           LINE_USER_ID = decoded.sub;
           userIdText.textContent = LINE_USER_ID;
+
+          checkConsentStatus(LINE_USER_ID);
  
           // Optional: also send raw JWT + userId to your server
           const rawIdToken = liff.getIDToken();
@@ -700,7 +713,80 @@
           showScreen("home");
         }
       });
- 
+
+      /* ===== CHECK CONSENT ===== */
+      async function checkConsentStatus(userId){
+        try{
+          const res = await fetch(`${apiUrl}?line_user_id=${userId}`);
+          const result = await res.json();
+      
+          if(result.consented === true){
+            console.log("Already consented");
+            goTo("home");   // 👉 ไปหน้า home
+          }else{
+            goTo("consent"); // 👉 แสดง consent
+          }
+      
+        }catch(err){
+          console.error("Consent check error", err);
+          goTo("consent");
+        }
+      }
+
+      /* ===== UI LOGIC ===== */
+      const checkbox = document.getElementById("consentCheckbox");
+      const btn = document.getElementById("submitBtn");
+      
+      checkbox.addEventListener("change", ()=>{
+        btn.disabled = !checkbox.checked;
+      });
+      
+      /* ===== SUBMIT CONSENT ===== */
+      async function submitConsent(){
+      
+        const employeeId = document.getElementById("employeeId").value.trim();
+      
+        if(!employeeId){
+          alert("กรุณากรอกเลขรหัสพนักงาน");
+          return;
+        }
+      
+        if(!checkbox.checked){
+          alert("กรุณาให้ความยินยอมก่อนใช้งาน");
+          return;
+        }
+      
+        const payload = {
+          line_user_id: lineUserId,
+          employee_id: employeeId,
+          consent: true,
+          consent_version: "v1.0",
+          timestamp: new Date().toISOString(),
+          source: "LIFF"
+        };
+      
+        try{
+          const res = await fetch(https://script.google.com/macros/s/AKfycbywlUADdisrqUB54D0vSaD-2R3VoMPqdaWX_3wwA-i6pdkHBPhlGCWjQUZsD-wyMuM/exec,{
+            method:"POST",
+            body: JSON.stringify(payload)
+          });
+      
+          const result = await res.json();
+      
+          if(result.status === "success"){
+            console.log("Consent saved");
+            goTo("initial input");  // 👉 ไปหน้า home หลังยินยอม
+          }else{
+            alert("บันทึกข้อมูลไม่สำเร็จ");
+          }
+      
+        }catch(err){
+          console.error(err);
+          alert("เชื่อมต่อระบบไม่สำเร็จ");
+          goTo("intial input");
+        }
+      }
+
       /* =========================
          Income & Expense logic
       ========================= */
@@ -1006,6 +1092,7 @@
     </script>
   </body>
 </html>
+
 
 
 
