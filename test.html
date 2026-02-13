@@ -732,7 +732,7 @@
           goTo("consent");
         }
       }
-
+      
       /* ===== UI LOGIC ===== */
       const checkbox = document.getElementById("consentCheckbox");
       const btn = document.getElementById("submitBtn");
@@ -768,7 +768,7 @@
       
           if(result.status === "success"){
             console.log("Consent saved");
-            goTo("initial input");  // 👉 ไปหน้า home หลังยินยอม
+            goTo("home");  // 👉 ไปหน้า home หลังยินยอม
           }else{
             alert("บันทึกข้อมูลไม่สำเร็จ");
           }
@@ -776,7 +776,7 @@
         }catch(err){
           console.error(err);
           alert("เชื่อมต่อระบบไม่สำเร็จ");
-          goTo("initial input");
+          goTo("home");
         }
       }
 
@@ -1085,6 +1085,7 @@
     </script>
   </body>
 </html>
+
 
 
 
