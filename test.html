@@ -744,13 +744,6 @@
       /* ===== SUBMIT CONSENT ===== */
       async function submitConsent(){
       
-        const employeeId = document.getElementById("employeeId").value.trim();
-      
-        if(!employeeId){
-          alert("กรุณากรอกเลขรหัสพนักงาน");
-          return;
-        }
-      
         if(!checkbox.checked){
           alert("กรุณาให้ความยินยอมก่อนใช้งาน");
           return;
@@ -1092,6 +1085,7 @@
     </script>
   </body>
 </html>
+
 
 
 
