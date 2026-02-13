@@ -717,7 +717,7 @@
       /* ===== CHECK CONSENT ===== */
       async function checkConsentStatus(userId){
         try{
-          const res = await fetch(`${apiUrl}?line_user_id=${userId}`);
+          const res = await fetch(`${"https://script.google.com/macros/s/AKfycbywlUADdisrqUB54D0vSaD-2R3VoMPqdaWX_3wwA-i6pdkHBPhlGCWjQUZsD-wyMuM/exec"}?line_user_id=${userId}`);
           const result = await res.json();
       
           if(result.consented === true){
@@ -760,6 +760,7 @@
         try{
           const res = await fetch("https://script.google.com/macros/s/AKfycbywlUADdisrqUB54D0vSaD-2R3VoMPqdaWX_3wwA-i6pdkHBPhlGCWjQUZsD-wyMuM/exec",{
             method:"POST",
+            headers:{ "Content-Type":"application/json" },
             body: JSON.stringify(payload)
           });
       
@@ -1084,6 +1085,7 @@
     </script>
   </body>
 </html>
+
 
 
 
