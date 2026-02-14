@@ -890,16 +890,6 @@
           }จาก "${selectedCategory}" จำนวน ${Number(
             rawAmount,
           ).toLocaleString()} บาท`,
-
-        const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyH2Bte6K98gWI3aguyUwsoQXVTqTQKPzwG-2sG8Ra6cJj771TOXkJ-jbCP-1xKOtd2/exec";
-        const QUEST_CODE = "TXN_RECORDED";
-        const POINTS = 3;
-        const url = new URL(APPS_SCRIPT_URL);
-        url.searchParams.set("callback", "onAwarded");
-        url.searchParams.set("userId", LINE_USER_ID);
-        url.searchParams.set("questCode", QUEST_CODE);
-        url.searchParams.set("points", String(POINTS));
-        jsonp(url.toString());
         );
  
         // Send to Google Sheet
@@ -1121,6 +1111,7 @@
     </script>
   </body>
 </html>
+
 
 
 
