@@ -807,6 +807,45 @@
       }
 
       /* =========================
+         Point system config
+      ========================= */
+      const POINT_SCRIPT_URL = "https://script.google.com/macros/s/PUT_YOUR_POINT_SCRIPT_ID/exec"; // ต้องลงท้ายด้วย /exec
+      const QUEST_CODE = "INCOME_EXPENSE_RECORDED";   // โค้ดเควส
+      const POINTS = 3;                               // คะแนนต่อครั้ง
+      
+      /* =========================
+         JSONP helper (ยิง Apps Script)
+      ========================= */
+      function jsonp(url){
+        const s = document.createElement("script");
+        s.src = url;
+        s.async = true;
+        s.onerror = () => {
+          console.warn("Point system call failed");
+        };
+        document.body.appendChild(s);
+      
+        // กัน script สะสม
+        setTimeout(() => s.remove(), 15000);
+      }
+      
+      /* =========================
+         JSONP callback (global)
+      ========================= */
+      window.onAwarded = function(res){
+        if(!res || !res.ok){
+          console.warn("Point system error", res);
+          return;
+        }
+      
+        if(res.already){
+          console.log("Quest already completed");
+        }else{
+          console.log(`+${res.points} points (total ${res.total})`);
+        }
+      };
+
+      /* =========================
          Income & Expense logic
       ========================= */
       let selectedCategory = "";
@@ -902,6 +941,19 @@
         )
           .then((res) => res.text())
           .then(() => {
+            
+            try{
+              const url = new URL(POINT_SCRIPT_URL);
+              url.searchParams.set("callback", "onAwarded");
+              url.searchParams.set("userId", LINE_USER_ID);   // หรือ employeeId
+              url.searchParams.set("questCode", QUEST_CODE);
+              url.searchParams.set("points", String(POINTS));
+      
+              jsonp(url.toString());
+            }catch(e){
+              console.warn("Point system error:", e);
+            }
+            
             setTimeout(() => {
               resetForm("income");
               resetForm("expense");
@@ -1111,6 +1163,7 @@
     </script>
   </body>
 </html>
+
 
 
 
