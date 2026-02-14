@@ -788,7 +788,6 @@
         try{
           const res = await fetch("https://script.google.com/macros/s/AKfycbxnN3YHB1F2uz_X6uDjwzwMufmavSHtVYzCY6dvWwSM4-wUctuTAba1D2lD2Qj3GMT6Ew/exec",{
             method:"POST",
-            headers:{ "Content-Type":"application/json" },
             body: JSON.stringify(payload)
           });
       
@@ -1112,6 +1111,7 @@
     </script>
   </body>
 </html>
+
 
 
 
