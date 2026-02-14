@@ -737,7 +737,7 @@
       /* ===== CHECK CONSENT ===== */
       async function checkConsentStatus(userId){
         try{
-          const res = await fetch(`${"https://script.google.com/macros/s/AKfycbwSUuj8oWOgxrsewtc313AshJAQh1Bt_5OyxSKRpJSkIA3Lr8RrrZow6DxL7gL20TPzXw/exec"}?line_user_id=${userId}`);
+          const res = await fetch(`${"https://script.google.com/macros/s/AKfycbwLEw1kCNdGmVlfVkKWU4rQ5h5ft8J3hjAEaTqIwhkFnQqaXYyaji993DcbcIUFD-vVpg/exec"}?line_user_id=${userId}`);
           const result = await res.json();
       
           if(result.consented === true){
@@ -786,7 +786,7 @@
         };
       
         try{
-          const res = await fetch("https://script.google.com/macros/s/AKfycbwSUuj8oWOgxrsewtc313AshJAQh1Bt_5OyxSKRpJSkIA3Lr8RrrZow6DxL7gL20TPzXw/exec",{
+          const res = await fetch("https://script.google.com/macros/s/AKfycbwLEw1kCNdGmVlfVkKWU4rQ5h5ft8J3hjAEaTqIwhkFnQqaXYyaji993DcbcIUFD-vVpg/exec",{
             method:"POST",
             headers:{ "Content-Type":"application/json" },
             body: JSON.stringify(payload)
@@ -1112,6 +1112,7 @@
     </script>
   </body>
 </html>
+
 
 
 
