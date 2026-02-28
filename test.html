@@ -554,7 +554,7 @@
         </button>
       </section>
  
-      <!-- ================= DEBT ================= -->
+      <!-- ================= DEBT =================
       <section id="debt" class="screen">
         <button class="back" onclick="goTo('home')">← Back</button>
         <div class="header">
@@ -617,16 +617,16 @@
               หนี้นอกระบบ (personal)
             </div>
           </div>
-        </div>
+        </div>-->
  
-        <!-- ================= wizard ================= -->
+        <!-- ================= wizard =================
         <div id="pageWizard" class="page hidden"></div>
  
         <button class="confirm-btn" onclick="handleDebtConfirm()">
           ยืนยัน
         </button>
       </section>
-    </div>
+    </div> -->
  
     <!-- Mascot popup -->
     <div id="mascotBox">
@@ -1097,7 +1097,7 @@
         submitDebt();
       }
  
-      function submitDebt() {
+      /*function submitDebt() {
         const payload = {};
         Object.keys(wizardData).forEach((cat) => {
           payload[cat] = wizardData[cat].cards.map((card) => ({
@@ -1130,7 +1130,7 @@
             alert("เกิดข้อผิดพลาด ❌");
             console.error(err);
           });
-      }
+      }*/
  
       function addCard(cat) {
         wizardData[cat].cards.push({
@@ -1155,6 +1155,7 @@
     </script>
   </body>
 </html>
+
 
 
 
