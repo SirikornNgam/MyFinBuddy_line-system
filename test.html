@@ -25,6 +25,9 @@
         font-size: 18px;
         text-align: center;
       }
+      h2 {
+        font-size: 18px;
+      }
       hcard {
         margin: 0 0 12px;
         font-size: 18px;
@@ -265,6 +268,12 @@
         flex-direction: column;
         gap: 6px;
       }
+      .option-select {
+        padding-left: 5px;
+        width: 180px;      /* ความกว้าง */
+        height: 40px;      /* ความสูง */
+        border-radius: 8px; /* มุมโค้ง */
+      }
     </style>
   </head>
   <body onload="initializeLiff()">
@@ -372,7 +381,7 @@
 
         <button
           class="btn"
-          onclick="goTo('paying debt')"
+          onclick="goTo('paying_debt')"
           aria-label="Paying Debt"
           style="padding: 0; border: none; background: none"
         >
@@ -591,6 +600,51 @@
         </div>
         <button class="confirm-btn" onclick="submitData('expense')">
           ยืนยัน
+        </button>
+      </section>
+
+      <section id="asset" class="screen">
+        <button class="back" onclick="goTo('home')">← Back</button>
+        <h2>กรณีที่คุณมีการซื้อบ้าน/รถ เพิ่มเติม (แบบจ่ายครั้งเดียวเต็มจำนวน):</h2>
+        <div class="grid">
+            <div class="card-btn" onclick="selectCard(this, 'house')">
+                <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/housing.png"
+                />
+                <div class="label">ซื้อบ้าน (house)</div>
+            </div>
+            <div class="card-btn" onclick="selectCard(this, 'car')">
+                <img
+                src="https://sirikornngam.github.io/MyFinBuddy-images/salary.png"
+                />
+                <div class="label">ซื้อรถ (car)</div>
+            </div>
+        </div>
+        <h2>กรณีที่คุณมีการลงทุน (โปรดเลือกประเภทการลงทุน):</h2>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="https://sirikornngam.github.io/MyFinBuddy-images/invest.jpg" style="width: 50px; height: 50px; object-fit: contain;">
+            <select id="propertyType" onchange="handleSelectChange(this)" class="option-select">
+                <option value="">-- Choose an option --</option>
+                <option value="house">House</option>
+                <option value="apartment">Apartment</option>
+                <option value="villa">Villa</option>
+            </select>
+        </div>
+        <div class="form-section">
+            <div class="amount-row">
+                <div id="selectedCategoryText_section1" class="selected-category">
+                ยังไม่ได้เลือก
+                </div>
+                <input
+                type="text"
+                id="amount_asset"
+                inputmode="numeric"
+                placeholder="จำนวนเงิน"
+                />
+            </div>
+        </div>
+        <button class="confirm-btn" onclick="submitData('asset')">
+            ยืนยัน
         </button>
       </section>
  
@@ -877,6 +931,13 @@
         }
       };
 
+      function handleSelectChange(selectElement) {
+            const selectedValue = selectElement.value;
+            if (selectedValue) {
+                selectCard(selectElement, selectedValue);
+            }
+        }
+
       /* =========================
          Income & Expense logic
       ========================= */
@@ -926,6 +987,7 @@
  
       attachAmountFormatter("amount_income");
       attachAmountFormatter("amount_expense");
+      attachAmountFormatter("amount_asset");
  
       function submitData(type) {
         const input = document.getElementById(`amount_${type}`);
@@ -934,11 +996,14 @@
         let rawAmount = input.value.replace(/,/g, "");
  
         if (!selectedCategory) {
-          alert(
-            `กรุณาเลือกหมวดหมู่${
-              type === "income" ? "รายรับ" : "รายจ่าย"
-            }ก่อนค่ะ`,
-          );
+          const typeNames = {
+              income: "รายรับ",
+              expense: "รายจ่าย",
+              paying_debt: "การชำระหนี้",
+              asset: "สินทรัพย์"
+          };
+
+          alert(`กรุณาเลือกหมวดหมู่${typeNames[type] || "หมวดหมู่"}ก่อนค่ะ`);
           return;
         }
  
@@ -956,11 +1021,9 @@
  
         // Mascot message
         showMascotMessage(
-          `คุณมี${
-            type === "income" ? "รายรับ" : "รายจ่าย"
-          }จาก "${selectedCategory}" จำนวน ${Number(
+        `คุณมี${typeNames[type] || "หมวดหมู่"}จาก "${selectedCategory}" จำนวน ${Number(
             rawAmount,
-          ).toLocaleString()} บาท`,
+        ).toLocaleString()} บาท`,
         );
  
         // Send to Google Sheet
@@ -989,6 +1052,7 @@
             setTimeout(() => {
               resetForm("income");
               resetForm("expense");
+              resetForm("asset");
             }, 1500);
           })
           .catch((err) => {
@@ -1195,6 +1259,7 @@
     </script>
   </body>
 </html>
+
 
 
 
