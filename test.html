@@ -620,7 +620,8 @@
                 <div class="label">ซื้อรถ (car)</div>
             </div>
         </div>
-        <h2>กรณีที่คุณมีการลงทุน (โปรดเลือกประเภทการลงทุน):</h2>
+        <h2>กรณีที่คุณมีการลงทุน</h2>
+        <h2>(โปรดเลือกประเภทการลงทุน):</h2>
         <div style="display: flex; align-items: center; gap: 8px;">
             <img src="https://sirikornngam.github.io/MyFinBuddy-images/invest.jpg" style="width: 50px; height: 50px; object-fit: contain;">
             <select id="propertyType" onchange="handleSelectChange(this)" class="option-select">
@@ -953,12 +954,15 @@
  
         const sec1 = document.getElementById("selectedCategoryText_section1");
         const sec2 = document.getElementById("selectedCategoryText_section2");
+        const sec4 = document.getElementById("selectedCategoryText_section4");
         if (sec1) sec1.textContent = category + " :";
         if (sec2) sec2.textContent = category + " :";
+        if (sec4) sec4.textContent = category + " :";
  
         // focus appropriate input
         const incomeInput = document.getElementById("amount_income");
         const expenseInput = document.getElementById("amount_expense");
+        const assetInput = document.getElementById("amount_asset");
         if (
           incomeInput &&
           document.getElementById("income").classList.contains("active")
@@ -969,6 +973,11 @@
           document.getElementById("expenses").classList.contains("active")
         ) {
           expenseInput.focus();
+        } else if (
+          assetInput &&
+          document.getElementById("asset").classList.contains("active")
+        ) {
+          assetInput.focus();
         }
       }
  
@@ -1259,6 +1268,7 @@
     </script>
   </body>
 </html>
+
 
 
 
