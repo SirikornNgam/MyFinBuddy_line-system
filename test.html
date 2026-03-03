@@ -664,7 +664,7 @@
                 />
             </div>
         </div>
-        <button class="confirm-btn" onclick="submitData('paying_debt')">
+        <button class="confirm-btn" onclick="submitData('payingdebt')">
             ยืนยัน
         </button>
       </section>
@@ -1052,12 +1052,13 @@
       
           // click = select
           card.onclick = ()=>{
-            document.querySelectorAll(".card-btn")
+            selectCard(card, row);
+            /*document.querySelectorAll(".card-btn")
               .forEach(x=>x.classList.remove("active"));
       
             card.classList.add("active");
             selectedDebt = row;
-            console.log("Selected:", selectedDebt);
+            console.log("Selected:", selectedDebt);*/
           };
       
           // double click = detail
@@ -1451,6 +1452,7 @@
     </script>
   </body>
 </html>
+
 
 
 
