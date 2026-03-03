@@ -846,6 +846,7 @@
           userIdText.textContent = LINE_USER_ID;
 
           checkConsentStatus(LINE_USER_ID);
+          onGotUserId(LINE_USER_ID)
  
           // Optional: also send raw JWT + userId to your server
           const rawIdToken = liff.getIDToken();
@@ -1018,14 +1019,16 @@
       /* =========================
          LOAD DATA
       ========================= */
-      Papa.parse(SHEET_CSV_URL, {
-        download:true,
-        header:true,
-        complete:function(res){
-          const data = res.data.filter(r => r["User ID"] === LINE_USER_ID);
-          renderCards(data);
-        }
-      });
+      function onGotUserId(userId) {
+        Papa.parse(SHEET_CSV_URL, {
+          download:true,
+          header:true,
+          complete:function(res){
+            const data = res.data.filter(r => r["User ID"] === LINE_USER_ID);
+            renderCards(data);
+          }
+        });
+      }
 
       /* =========================
          RENDER
@@ -1437,6 +1440,7 @@
     </script>
   </body>
 </html>
+
 
 
 
