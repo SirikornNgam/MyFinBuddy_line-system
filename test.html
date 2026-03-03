@@ -1017,7 +1017,7 @@
         "default": "https://cdn-icons-png.flaticon.com/512/565/565547.png"
       };
 
-      let selectedDebt = null;
+      //let selectedDebt = null;
       /* =========================
          LOAD DATA
       ========================= */
@@ -1211,11 +1211,12 @@
         };
  
         // Mascot message
-        showMascotMessage(
+        try { showMascotMessage( `คุณมี${typeNames[type] || "หมวดหมู่"}จาก "${selectedCategory}" จำนวน ${Number( rawAmount, ).toLocaleString()} บาท`, ); } catch (err) { console.error("Error in mascot message:", err); }
+        /*showMascotMessage(
         `คุณมี${typeNames[type] || "หมวดหมู่"}จาก "${selectedCategory}" จำนวน ${Number(
             rawAmount,
         ).toLocaleString()} บาท`,
-        );
+        );*/
  
         // Send to Google Sheet
         fetch(
@@ -1455,6 +1456,7 @@
     </script>
   </body>
 </html>
+
 
 
 
