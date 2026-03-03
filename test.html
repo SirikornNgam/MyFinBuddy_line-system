@@ -1051,9 +1051,8 @@
           `;
       
           // click = select
-          card.onclick = function(){
-            //selectCard(card, row);
-            handleSelectChange(this)
+          card.onclick = ()=>{
+            selectCard(card, row["Debt Type"]);
             /*document.querySelectorAll(".card-btn")
               .forEach(x=>x.classList.remove("active"));
       
@@ -1453,6 +1452,7 @@
     </script>
   </body>
 </html>
+
 
 
 
