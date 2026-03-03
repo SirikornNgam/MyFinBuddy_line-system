@@ -1037,7 +1037,6 @@
       ========================= */
       function renderCards(data){
         const c = document.getElementById("cardContainer");
-        const debt_type = row["Debt Type"];
         c.innerHTML = "";
       
         data.forEach(row=>{
@@ -1053,13 +1052,7 @@
       
           // click = select
           card.onclick = ()=>{
-            selectCard(card, debt_type);
-            /*document.querySelectorAll(".card-btn")
-              .forEach(x=>x.classList.remove("active"));
-      
-            card.classList.add("active");
-            selectedDebt = row;
-            console.log("Selected:", selectedDebt);*/
+            selectCard(card, row["Debt Type"];);
           };
       
           // double click = detail
@@ -1456,6 +1449,7 @@
     </script>
   </body>
 </html>
+
 
 
 
