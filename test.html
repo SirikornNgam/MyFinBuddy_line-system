@@ -1024,7 +1024,7 @@
           download:true,
           header:true,
           complete:function(res){
-            const data = res.data.filter(r => r["User ID"] === LINE_USER_ID);
+            const data = res.data.filter(r => r["User ID"] === userId);
             renderCards(data);
           }
         });
@@ -1440,6 +1440,7 @@
     </script>
   </body>
 </html>
+
 
 
 
