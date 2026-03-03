@@ -1022,7 +1022,7 @@
         download:true,
         header:true,
         complete:function(res){
-          const data = res.data.filter(r => r["User ID"] === Ub6904fe6ba60fe083a3f5f04bfd42af5);
+          const data = res.data.filter(r => r["User ID"] === LINE_USER_ID);
           renderCards(data);
         }
       });
@@ -1437,6 +1437,7 @@
     </script>
   </body>
 </html>
+
 
 
 
