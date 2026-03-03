@@ -1017,6 +1017,7 @@
         "default": "https://cdn-icons-png.flaticon.com/512/565/565547.png"
       };
 
+      let selectedDebt = null;
       /* =========================
          LOAD DATA
       ========================= */
@@ -1051,7 +1052,13 @@
       
           // click = select
           card.onclick = ()=>{
-            selectCard(card, row["Debt Type"];);
+            selectCard(card, row["Debt Type"]);
+            /*document.querySelectorAll(".card-btn")
+              .forEach(x=>x.classList.remove("active"));
+      
+            card.classList.add("active");
+            selectedDebt = row;
+            console.log("Selected:", selectedDebt);*/
           };
       
           // double click = detail
@@ -1448,6 +1455,104 @@
     </script>
   </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
