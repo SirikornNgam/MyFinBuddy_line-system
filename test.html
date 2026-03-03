@@ -1243,6 +1243,7 @@
             setTimeout(() => {
               resetForm("income");
               resetForm("expense");
+              resetForm("payingdebt");
               resetForm("asset");
             }, 1500);
           })
@@ -1279,9 +1280,11 @@
  
         const sec1 = document.getElementById("selectedCategoryText_section1");
         const sec2 = document.getElementById("selectedCategoryText_section2");
+        const sec3 = document.getElementById("selectedCategoryText_section3");
         const sec4 = document.getElementById("selectedCategoryText_section4");
         if (sec1) sec1.textContent = "ยังไม่ได้เลือก";
         if (sec2) sec2.textContent = "ยังไม่ได้เลือก";
+        if (sec3) sec3.textContent = "ยังไม่ได้เลือก";
         if (sec4) sec4.textContent = "ยังไม่ได้เลือก";
  
         document
@@ -1452,6 +1455,7 @@
     </script>
   </body>
 </html>
+
 
 
 
