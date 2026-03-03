@@ -1185,14 +1185,21 @@
         if (!input) return;
  
         let rawAmount = input.value.replace(/,/g, "");
+
+        const typeNames = {
+            income: "รายรับ",
+            expense: "รายจ่าย",
+            payingdebt: "การชำระหนี้",
+            asset: "สินทรัพย์"
+        };
  
         if (!selectedCategory) {
-          const typeNames = {
+          /*const typeNames = {
               income: "รายรับ",
               expense: "รายจ่าย",
               payingdebt: "การชำระหนี้",
               asset: "สินทรัพย์"
-          };
+          };*/
 
           alert(`กรุณาเลือกหมวดหมู่${typeNames[type] || "หมวดหมู่"}ก่อนค่ะ`);
           return;
@@ -1456,6 +1463,7 @@
     </script>
   </body>
 </html>
+
 
 
 
