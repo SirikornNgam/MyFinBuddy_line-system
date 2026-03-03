@@ -275,6 +275,51 @@
         border-radius: 8px; /* มุมโค้ง */
       }
       #otherInput { display: none; }
+      #cardContainer{
+        display:grid;
+        grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+        gap:14px;
+      }
+      /* modal */
+      .modal-overlay{
+        position:fixed;
+        inset:0;
+        background:rgba(0,0,0,.45);
+        display:none;
+        align-items:center;
+        justify-content:center;
+        z-index:999;
+      }
+      
+      .modal{
+        background:#fff;
+        border-radius:18px;
+        padding:20px;
+        width:90%;
+        max-width:420px;
+      }
+      
+      .modal h2{
+        margin:0 0 10px;
+      }
+      
+      .detail-row{
+        display:flex;
+        justify-content:space-between;
+        padding:6px 0;
+        border-bottom:1px solid #eee;
+        font-size:14px;
+      }
+      
+      .close-btn{
+        margin-top:14px;
+        width:100%;
+        padding:12px;
+        border:none;
+        border-radius:10px;
+        background:#1e88e5;
+        color:#fff;
+      }
     </style>
   </head>
   <body onload="initializeLiff()">
@@ -604,6 +649,25 @@
         </button>
       </section>
 
+      <!-- ================= PAYING DEBT ================= -->
+      <section id="paying_debt" class="screen">
+        <button class="back" onclick="goTo('home')">← Back</button>
+        <div class="header">
+          <h3>โปรดเลือกหนี้ที่ต้องการชำระ</h3>
+        </div>
+        <div id="cardContainer"></div>
+        
+        <!-- modal -->
+        <div class="modal-overlay" id="detailModal">
+          <div class="modal">
+            <h2 id="modalTitle"></h2>
+            <div id="modalBody"></div>
+            <button class="close-btn" onclick="closeModal()">ปิด</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ASSET ================= -->
       <section id="asset" class="screen">
         <button class="back" onclick="goTo('home')">← Back</button>
         <h2>กรณีที่คุณมีการซื้อบ้าน/รถ เพิ่มเติม (แบบจ่ายครั้งเดียวเต็มจำนวน):</h2>
@@ -737,6 +801,7 @@
  
     <!-- LIFF SDK + App logic -->
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script src="https://unpkg.com/papaparse@5.4.1/papaparse.min.js"></script>
     <script>
       let LINE_USER_ID = "";
  
@@ -895,6 +960,89 @@
           console.error(err);
           alert("เชื่อมต่อระบบไม่สำเร็จ");
         }
+      }
+
+      const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4q356Gy3uCFz2DHsZQs0a-qQSzILQQqMzfKoby7bIJRJzmxQEIlFew9vD_p5BP_PGHyegyMurZyIZ/pub?gid=2072812768&single=true&output=csv";
+      /* =========================
+         MAP TYPE → IMAGE
+      ========================= */
+      const typeImageMap = {
+        "หนี้บัตรเครดิต": "https://sirikornngam.github.io/MyFinBuddy-images/housing.png",
+        "รถยนต์": "https://cdn-icons-png.flaticon.com/512/741/741407.png",
+        "บ้าน": "https://cdn-icons-png.flaticon.com/512/609/609803.png",
+        "กยศ": "https://cdn-icons-png.flaticon.com/512/2942/2942823.png",
+        "ส่วนบุคคล": "https://cdn-icons-png.flaticon.com/512/3135/3135706.png",
+        "default": "https://cdn-icons-png.flaticon.com/512/565/565547.png"
+      };
+
+      let selectedDebt = null;
+      /* =========================
+         LOAD DATA
+      ========================= */
+      Papa.parse(SHEET_CSV_URL, {
+        download:true,
+        header:true,
+        complete:function(res){
+          const data = res.data.filter(r => r["User ID"] === LINE_USER_ID);
+          renderCards(data);
+        }
+      });
+
+      /* =========================
+         RENDER
+      ========================= */
+      function renderCards(data){
+        const c = document.getElementById("cardContainer");
+        c.innerHTML = "";
+      
+        data.forEach(row=>{
+          const img = typeImageMap[row["Debt Type"]] || typeImageMap.default;
+      
+          const card = document.createElement("div");
+          card.className = "card-btn";
+      
+          card.innerHTML = `
+            <img src="${img}">
+            <div class="label">${row["Debt Type"]}</div>
+          `;
+      
+          // click = select
+          card.onclick = ()=>{
+            document.querySelectorAll(".card-btn")
+              .forEach(x=>x.classList.remove("active"));
+      
+            card.classList.add("active");
+            selectedDebt = row;
+            console.log("Selected:", selectedDebt);
+          };
+      
+          // double click = detail
+          card.ondblclick = ()=>{
+            openDetail(row);
+          };
+      
+          c.appendChild(card);
+        });
+      }
+      
+      /* =========================
+         MODAL
+      ========================= */
+      function openDetail(row){
+        document.getElementById("modalTitle").innerText = row["Debt Type"];
+      
+        document.getElementById("modalBody").innerHTML = `
+          <div class="detail-row"><span>ยอดหนี้</span><span>${row["Debt Amount"]}</span></div>
+          <div class="detail-row"><span>ดอกเบี้ย</span><span>${row["Interest Rate"]}%</span></div>
+          <div class="detail-row"><span>ชำระต่อเดือน (ขั้นต่ำ)</span><span>${row["Debt Payment/Month"]}</span></div>
+          <div class="detail-row"><span>หมายเหตุ</span><span>${row["Remark"] || "-"}</span></div>
+        `;
+      
+        document.getElementById("detailModal").style.display="flex";
+      }
+      
+      function closeModal(){
+        document.getElementById("detailModal").style.display="none";
       }
 
       /* =========================
@@ -1289,6 +1437,7 @@
     </script>
   </body>
 </html>
+
 
 
 
