@@ -586,21 +586,7 @@
             <img
               src="https://sirikornngam.github.io/MyFinBuddy-images/housing.jpg"
             />
-            <div class="label">ที่อยู่อาศัย (housing)</div>
-          </div>
- 
-          <div class="card-btn" onclick="selectCard(this, 'investment')">
-            <img
-              src="https://sirikornngam.github.io/MyFinBuddy-images/investment.png"
-            />
-            <div class="label">การลงทุน (investment)</div>
-          </div>
- 
-          <div class="card-btn" onclick="selectCard(this, 'debt')">
-            <img
-              src="https://sirikornngam.github.io/MyFinBuddy-images/debt payment.png"
-            />
-            <div class="label">ชำระหนี้ (debt)</div>
+            <div class="label">เช่าที่อยู่อาศัย (housing)</div>
           </div>
  
           <div class="card-btn" onclick="selectCard(this, 'shopping/fashion')">
@@ -610,18 +596,18 @@
             <div class="label">ช็อปปิ้ง/แฟชั่น/ความงาม (shopping)</div>
           </div>
  
-          <div class="card-btn" onclick="selectCard(this, 'health/insurance')">
+          <div class="card-btn" onclick="selectCard(this, 'health')">
             <img
               src="https://sirikornngam.github.io/MyFinBuddy-images/health.jpg"
             />
-            <div class="label">สุขภาพ/ประกัน (health/insurance)</div>
+            <div class="label">สุขภาพ (health)</div>
           </div>
- 
-          <div class="card-btn" onclick="selectCard(this, 'business/work')">
+
+          <div class="card-btn" onclick="selectCard(this, 'insurance')">
             <img
-              src="https://sirikornngam.github.io/MyFinBuddy-images/business.png"
+              src="https://sirikornngam.github.io/MyFinBuddy-images/health.jpg"
             />
-            <div class="label">ธุรกิจ/งาน (business/work)</div>
+            <div class="label">ประกัน (insurance)</div>
           </div>
  
           <div class="card-btn" onclick="selectCard(this, 'education')">
@@ -665,6 +651,22 @@
             <button class="close-btn" onclick="closeModal()">ปิด</button>
           </div>
         </div>
+        <div class="form-section">
+            <div class="amount-row">
+                <div id="selectedCategoryText_section3" class="selected-category">
+                ยังไม่ได้เลือก
+                </div>
+                <input
+                type="text"
+                id="amount_payingdebt"
+                inputmode="numeric"
+                placeholder="จำนวนเงิน"
+                />
+            </div>
+        </div>
+        <button class="confirm-btn" onclick="submitData('paying_debt')">
+            ยืนยัน
+        </button>
       </section>
 
       <!-- ================= ASSET ================= -->
@@ -1124,14 +1126,17 @@
  
         const sec1 = document.getElementById("selectedCategoryText_section1");
         const sec2 = document.getElementById("selectedCategoryText_section2");
+        const sec3 = document.getElementById("selectedCategoryText_section3");
         const sec4 = document.getElementById("selectedCategoryText_section4");
         if (sec1) sec1.textContent = category + " :";
         if (sec2) sec2.textContent = category + " :";
+        if (sec3) sec3.textContent = category + " :";
         if (sec4) sec4.textContent = category + " :";
  
         // focus appropriate input
         const incomeInput = document.getElementById("amount_income");
         const expenseInput = document.getElementById("amount_expense");
+        const payingdebtInput = document.getElementById("amount_payingdebt");
         const assetInput = document.getElementById("amount_asset");
         if (
           incomeInput &&
@@ -1143,6 +1148,11 @@
           document.getElementById("expenses").classList.contains("active")
         ) {
           expenseInput.focus();
+        } else if (
+          payingdebtInput &&
+          document.getElementById("paying_debt").classList.contains("active")
+        ) {
+          payingdebtInput.focus();
         } else if (
           assetInput &&
           document.getElementById("asset").classList.contains("active")
@@ -1166,6 +1176,7 @@
  
       attachAmountFormatter("amount_income");
       attachAmountFormatter("amount_expense");
+      attachAmountFormatter("amount_payingdebt");
       attachAmountFormatter("amount_asset");
  
       function submitData(type) {
@@ -1440,6 +1451,7 @@
     </script>
   </body>
 </html>
+
 
 
 
