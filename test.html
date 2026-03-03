@@ -427,7 +427,7 @@
 
         <button
           class="btn"
-          onclick="goTo('paying_debt')"
+          onclick="goTo('payingdebt')"
           aria-label="Paying Debt"
           style="padding: 0; border: none; background: none"
         >
@@ -636,7 +636,7 @@
       </section>
 
       <!-- ================= PAYING DEBT ================= -->
-      <section id="paying_debt" class="screen">
+      <section id="payingdebt" class="screen">
         <button class="back" onclick="goTo('home')">← Back</button>
         <div class="header">
           <h3>โปรดเลือกหนี้ที่ต้องการชำระ</h3>
@@ -1151,7 +1151,7 @@
           expenseInput.focus();
         } else if (
           payingdebtInput &&
-          document.getElementById("paying_debt").classList.contains("active")
+          document.getElementById("payingdebt").classList.contains("active")
         ) {
           payingdebtInput.focus();
         } else if (
@@ -1190,7 +1190,7 @@
           const typeNames = {
               income: "รายรับ",
               expense: "รายจ่าย",
-              paying_debt: "การชำระหนี้",
+              payingdebt: "การชำระหนี้",
               asset: "สินทรัพย์"
           };
 
@@ -1452,6 +1452,7 @@
     </script>
   </body>
 </html>
+
 
 
 
