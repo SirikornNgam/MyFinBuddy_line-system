@@ -961,6 +961,45 @@
           alert("เชื่อมต่อระบบไม่สำเร็จ");
         }
       }
+      
+      /* =========================
+         Point system config
+      ========================= */
+      const POINT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyH2Bte6K98gWI3aguyUwsoQXVTqTQKPzwG-2sG8Ra6cJj771TOXkJ-jbCP-1xKOtd2/exec"; // ต้องลงท้ายด้วย /exec
+      const QUEST_CODE = "TXN_RECORDED";   // โค้ดเควส
+      const POINTS = 3;                    // คะแนนต่อครั้ง
+      
+      /* =========================
+         JSONP helper (ยิง Apps Script)
+      ========================= */
+      function jsonp(url){
+        const s = document.createElement("script");
+        s.src = url;
+        s.async = true;
+        s.onerror = () => {
+          console.warn("Point system call failed");
+        };
+        document.body.appendChild(s);
+      
+        // กัน script สะสม
+        setTimeout(() => s.remove(), 15000);
+      }
+      
+      /* =========================
+         JSONP callback (global)
+      ========================= */
+      window.onAwarded = function(res){
+        if(!res || !res.ok){
+          console.warn("Point system error", res);
+          return;
+        }
+      
+        if(res.already){
+          console.log("Quest already completed");
+        }else{
+          console.log(`+${res.points} points (total ${res.total})`);
+        }
+      };
 
       const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vS4q356Gy3uCFz2DHsZQs0a-qQSzILQQqMzfKoby7bIJRJzmxQEIlFew9vD_p5BP_PGHyegyMurZyIZ/pub?gid=2072812768&single=true&output=csv";
       /* =========================
@@ -1044,45 +1083,6 @@
       function closeModal(){
         document.getElementById("detailModal").style.display="none";
       }
-
-      /* =========================
-         Point system config
-      ========================= */
-      const POINT_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyH2Bte6K98gWI3aguyUwsoQXVTqTQKPzwG-2sG8Ra6cJj771TOXkJ-jbCP-1xKOtd2/exec"; // ต้องลงท้ายด้วย /exec
-      const QUEST_CODE = "TXN_RECORDED";   // โค้ดเควส
-      const POINTS = 3;                    // คะแนนต่อครั้ง
-      
-      /* =========================
-         JSONP helper (ยิง Apps Script)
-      ========================= */
-      function jsonp(url){
-        const s = document.createElement("script");
-        s.src = url;
-        s.async = true;
-        s.onerror = () => {
-          console.warn("Point system call failed");
-        };
-        document.body.appendChild(s);
-      
-        // กัน script สะสม
-        setTimeout(() => s.remove(), 15000);
-      }
-      
-      /* =========================
-         JSONP callback (global)
-      ========================= */
-      window.onAwarded = function(res){
-        if(!res || !res.ok){
-          console.warn("Point system error", res);
-          return;
-        }
-      
-        if(res.already){
-          console.log("Quest already completed");
-        }else{
-          console.log(`+${res.points} points (total ${res.total})`);
-        }
-      };
       
       const otherInput = document.getElementById("otherInput");
       function handleSelectChange(selectElement) {
@@ -1437,6 +1437,7 @@
     </script>
   </body>
 </html>
+
 
 
 
