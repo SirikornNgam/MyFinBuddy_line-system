@@ -274,6 +274,7 @@
         height: 40px;      /* ความสูง */
         border-radius: 8px; /* มุมโค้ง */
       }
+      #otherInput { display: none; }
     </style>
   </head>
   <body onload="initializeLiff()">
@@ -625,10 +626,14 @@
             <img src="https://sirikornngam.github.io/MyFinBuddy-images/invest.jpg" style="width: 50px; height: 50px; object-fit: contain;">
             <select id="propertyType" onchange="handleSelectChange(this)" class="option-select">
                 <option value="">-- Choose an option --</option>
-                <option value="house">House</option>
-                <option value="apartment">Apartment</option>
-                <option value="villa">Villa</option>
+                <option value="provident_fund">กองทุนสำรองเลี้ยงชีพ</option>
+                <option value="LTF/SSF">กองทุน LTF/SSF</option>
+                <option value="RMF">กองทุน RMF</option>
+                <option value="Stocks">หุ้นสามัญ/หุ้นบุริมสิทธิ</option>
+                <option value="EJIP">EJIP</option>
+                <option value="other">อื่นๆ</option>
             </select>
+            <input type="text" id="otherInput" placeholder="โปรดระบุ">
         </div>
         <div class="form-section">
             <div class="amount-row">
@@ -930,13 +935,28 @@
           console.log(`+${res.points} points (total ${res.total})`);
         }
       };
-
+      
+      const otherInput = document.getElementById("otherInput");
       function handleSelectChange(selectElement) {
-            const selectedValue = selectElement.value;
-            if (selectedValue) {
-                selectCard(selectElement, selectedValue);
-            }
-        }
+          let selectedValue = selectElement.value;
+          if (selectedValue == "other"){
+              otherInput.style.display = "inline-block";
+              otherInput.focus();
+          } else {
+                otherInput.style.display = "none";
+                otherInput.value = "";
+          }
+          if (selectedValue) {
+              selectCard(selectElement, selectedValue);
+          }
+      }
+
+      otherInput.addEventListener("input", function () {
+          if (this.value.trim() !== "") {
+              const selectedValue = this.value.trim();
+              selectCard(document.getElementById("propertyType"), selectedValue);
+          }
+      });
 
       /* =========================
          Income & Expense logic
@@ -1269,6 +1289,7 @@
     </script>
   </body>
 </html>
+
 
 
 
