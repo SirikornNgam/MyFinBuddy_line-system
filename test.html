@@ -1048,19 +1048,18 @@
       
           const card = document.createElement("div");
           card.className = "card-btn";
+
+          const debtTypeWithNumber = `${rowNumber} ${row["Debt Type"]}`;
       
           card.innerHTML = `
             <img src="${img}">
             <div class="label">${rowNumber} ${row["Debt Type"]}</div>
           `;
-          rowNumber++;
+          //rowNumber++;
       
           // click = select
           card.onclick = ()=>{
-            selectCard(card, {
-              number: rowNumber,
-              debtType: row["Debt Type"]
-            });
+            selectCard(card, debtTypeWithNumber);
             //selectCard(card, row["Debt Type"]);
             /*document.querySelectorAll(".card-btn")
               .forEach(x=>x.classList.remove("active"));
@@ -1069,6 +1068,7 @@
             selectedDebt = row;
             console.log("Selected:", selectedDebt);*/
           };
+          rowNumber++;
       
           // double click = detail
           card.ondblclick = ()=>{
@@ -1472,6 +1472,7 @@
     </script>
   </body>
 </html>
+
 
 
 
