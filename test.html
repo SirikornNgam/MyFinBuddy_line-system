@@ -464,6 +464,9 @@
             "
           />
         </button>
+
+        <p><b>Note:</b> ช่องทางนี้สำหรับการอัปเดตสถานะทางการเงิน รายรับ-รายจ่าย (จากที่คุณกรอกในเว็บครั้งแรก)</p>
+        <p>**หากคุณเพิ่งเริ่มใช้งานระบบนี้ครั้งแรก กรุณากรอกยอดรายจ่าย (ที่คุณใช้ตั้งแต่ต้นเดือน ถึง ตอนนี้ด้วย) เพื่อความแม่นยำในการคำณวน</p>
  
         <!--<button
           class="btn"
@@ -664,6 +667,11 @@
                 />
             </div>
         </div>
+        <p><b>Note:</b> หากมีหนี้สินเพิ่มเติม จากการกรอกครั้งแรก โปรดอัปเดตเพิ่มในเว็บอีกครั้ง -> 🔗
+          <a href="https://my-fin-buddy.replit.app" target="_blank">
+            https://my-fin-buddy.replit.app
+          </a>
+        </p>
         <button class="confirm-btn" onclick="submitData('payingdebt')">
             ยืนยัน
         </button>
@@ -1056,7 +1064,6 @@
             <img src="${img}">
             <div class="label">${rowNumber} ${row["Debt Type"]}</div>
           `;
-          //rowNumber++;
       
           // click = select
           card.onclick = ()=>{
@@ -1473,6 +1480,7 @@
     </script>
   </body>
 </html>
+
 
 
 
