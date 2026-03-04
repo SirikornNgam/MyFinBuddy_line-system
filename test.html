@@ -1049,7 +1049,8 @@
           const card = document.createElement("div");
           card.className = "card-btn";
 
-          const debtTypeWithNumber = `${rowNumber} ${row["Debt Type"]}`;
+          const debtTypeValue = row["Debt Type"].value || row["Debt Type"].toString();
+          const debtTypeWithNumber = `${rowNumber} ${debtTypeValue}`;
       
           card.innerHTML = `
             <img src="${img}">
@@ -1472,6 +1473,7 @@
     </script>
   </body>
 </html>
+
 
 
 
