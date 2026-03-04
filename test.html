@@ -1055,9 +1055,12 @@
           `;
           rowNumber++;
       
+          let name = "";
           // click = select
           card.onclick = ()=>{
-            selectCard(card, row["Debt Type"]);
+            name = "${rowNumber} ${row["Debt Type"]"
+            selectCard(card, name);
+            //selectCard(card, row["Debt Type"]);
             /*document.querySelectorAll(".card-btn")
               .forEach(x=>x.classList.remove("active"));
       
@@ -1468,6 +1471,7 @@
     </script>
   </body>
 </html>
+
 
 
 
