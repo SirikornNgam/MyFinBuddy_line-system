@@ -1040,6 +1040,8 @@
       function renderCards(data){
         const c = document.getElementById("cardContainer");
         c.innerHTML = "";
+
+        let rowNumber = 1;
       
         data.forEach(row=>{
           const img = typeImageMap[row["Debt Type"]] || typeImageMap.default;
@@ -1049,8 +1051,9 @@
       
           card.innerHTML = `
             <img src="${img}">
-            <div class="label">${row["Debt Type"]}</div>
+            <div class="label">${rowNumber} ${row["Debt Type"]}</div>
           `;
+          rowNumber++;
       
           // click = select
           card.onclick = ()=>{
@@ -1465,6 +1468,7 @@
     </script>
   </body>
 </html>
+
 
 
 
